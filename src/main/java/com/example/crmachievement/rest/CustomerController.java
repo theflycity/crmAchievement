@@ -52,4 +52,37 @@ public class CustomerController {
         ApiResponse<?> response = ApiResponse.success(serviceResult.getBusinessCode(), serviceResult.getPayload());
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping()
+    @ApiOperation("查询客户列表")
+    public ResponseEntity<?> listCustomer() {
+        // 传递请求
+        ServiceResult<?> serviceResult = crmCustomerService.getCustomerList();
+
+        // 返回响应
+        ApiResponse<?> response = ApiResponse.success(serviceResult.getBusinessCode(), serviceResult.getPayload());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("查询单个客户")
+    public ResponseEntity<?> getCustomer(@PathVariable("id") String id) {
+        // 传递请求
+        ServiceResult<?> serviceResult = crmCustomerService.getCustomer(id);
+
+        // 返回响应
+        ApiResponse<?> response = ApiResponse.success(serviceResult.getBusinessCode(), serviceResult.getPayload());
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("删除客户")
+    public ResponseEntity<?> deleteCustomer(@PathVariable("id") String id) {
+        // 传递请求
+        ServiceResult<?> serviceResult = crmCustomerService.deleteCustomer(id);
+
+        // 返回响应
+        ApiResponse<?> response = ApiResponse.success(serviceResult.getBusinessCode(), serviceResult.getPayload());
+        return ResponseEntity.ok(response);
+    }
 }

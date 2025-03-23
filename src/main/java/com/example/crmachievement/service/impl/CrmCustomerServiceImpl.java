@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.example.crmachievement.domain.enums.BusinessCode.*;
 
@@ -93,6 +94,51 @@ public class CrmCustomerServiceImpl extends ServiceImpl<CrmCustomerMapper, CrmCu
 
         // 保存到数据库并返回结果
         return saveOrUpdateAndReturnResult(customer, id);
+    }
+
+    @Override
+    public ServiceResult<?> getCustomerList() {
+        // 使用MyBatis-Plus的Service接口查询所有客户
+        List<CrmCustomer> customerList = list();
+
+        // 返回结果
+        if (customerList != null && !customerList.isEmpty()) {
+            return ServiceResult.success(SUCCESS, customerList);
+        } else {
+            return ServiceResult.fail(CUSTOMER_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ServiceResult<?> getCustomer(String id) {
+        // 查询客户
+        CrmCustomer customer = getById(id);
+
+        // 返回结果
+        if (customer != null) {
+            return ServiceResult.success(SUCCESS, customer);
+        } else {
+            return ServiceResult.fail(CUSTOMER_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ServiceResult<?> deleteCustomer(String id) {
+        // 查询客户是否存在
+        CrmCustomer existingCustomer = getById(id);
+        if (existingCustomer == null) {
+            return ServiceResult.fail(CUSTOMER_NOT_FOUND);
+        }
+
+        // 删除客户
+        boolean deleteResult = removeById(id);
+
+        // 返回结果
+        if (deleteResult) {
+            return ServiceResult.success(SUCCESS, "客户删除成功");
+        } else {
+            return ServiceResult.fail(INTERNAL_ERROR);
+        }
     }
 
     private ServiceResult<?> saveOrUpdateAndReturnResult(CrmCustomer customer, String customerId) {

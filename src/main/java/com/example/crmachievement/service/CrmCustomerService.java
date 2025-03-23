@@ -16,4 +16,10 @@ public interface CrmCustomerService extends IService<CrmCustomer> {
     ServiceResult<?> createCustomer(String inputName, String inputCity, String inputPhone, String inputCreatedBy);
 
     ServiceResult<?> updateCustomer(String id, String inputName, String inputCity, String inputPhone, String inputCreatedBy, String createdBy, Date createdTime);
+
+    ServiceResult<?> getCustomerList();
+
+    ServiceResult<?> getCustomer(String id);
+
+    ServiceResult<?> deleteCustomer(String id);
 }
