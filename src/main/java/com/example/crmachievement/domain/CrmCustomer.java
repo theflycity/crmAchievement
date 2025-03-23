@@ -47,6 +47,11 @@ public class CrmCustomer implements Serializable {
     private String createdBy;
 
     /**
+     * 更新人
+     */
+    private String updatedBy;
+
+    /**
      * 更新时间
      */
     private Date updateTime;
@@ -72,6 +77,7 @@ public class CrmCustomer implements Serializable {
             && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
             && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
             && (this.getCreatedBy() == null ? other.getCreatedBy() == null : this.getCreatedBy().equals(other.getCreatedBy()))
+            && (this.getUpdatedBy() == null ? other.getUpdatedBy() == null : this.getUpdatedBy().equals(other.getUpdatedBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
 
@@ -85,6 +91,7 @@ public class CrmCustomer implements Serializable {
         result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
         result = prime * result + ((getCreatedTime() == null) ? 0 : getCreatedTime().hashCode());
         result = prime * result + ((getCreatedBy() == null) ? 0 : getCreatedBy().hashCode());
+        result = prime * result + ((getUpdatedBy() == null) ? 0 : getUpdatedBy().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         return result;
     }
@@ -101,6 +108,7 @@ public class CrmCustomer implements Serializable {
         sb.append(", phone=").append(phone);
         sb.append(", createdTime=").append(createdTime);
         sb.append(", createdBy=").append(createdBy);
+        sb.append(", updatedBy=").append(updatedBy);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

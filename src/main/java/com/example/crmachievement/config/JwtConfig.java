@@ -41,13 +41,14 @@ public class JwtConfig {
 
 
     @PostConstruct
-    public void init() {if (SECRET  == null || SECRET .trim().isEmpty()) {
-        throw new IllegalStateException("jwt.secret未配置");
-    }
-        if (SECRET .length() < 32) {
+    public void init() {
+        if (SECRET == null || SECRET.trim().isEmpty()) {
+            throw new IllegalStateException("jwt.secret未配置");
+        }
+        if (SECRET.length() < 32) {
             throw new IllegalArgumentException("jwt.secret必须至少32字符");
         }
-        this.SECRET_KEY = Keys.hmacShaKeyFor(SECRET .getBytes(StandardCharsets.UTF_8));
+        this.SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
     }
 
     /**

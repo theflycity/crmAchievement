@@ -4,6 +4,8 @@ import com.example.crmachievement.domain.CrmCustomer;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crmachievement.domain.result.ServiceResult;
 
+import java.util.Date;
+
 /**
 * @author 001
 * @description 针对表【crm_customer】的数据库操作Service
@@ -11,5 +13,7 @@ import com.example.crmachievement.domain.result.ServiceResult;
 */
 public interface CrmCustomerService extends IService<CrmCustomer> {
 
-    ServiceResult createCustomer(String inputName, String inputCity, String inputPhone, String inputCreatedBy);
+    ServiceResult<?> createCustomer(String inputName, String inputCity, String inputPhone, String inputCreatedBy);
+
+    ServiceResult<?> updateCustomer(String id, String inputName, String inputCity, String inputPhone, String inputCreatedBy, String createdBy, Date createdTime);
 }

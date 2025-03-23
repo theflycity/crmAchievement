@@ -1,6 +1,5 @@
 package com.example.crmachievement.rest;
 
-import com.example.crmachievement.domain.dto.AuthInfo;
 import com.example.crmachievement.domain.enums.BusinessCode;
 import com.example.crmachievement.domain.dto.CustomerDTO;
 import com.example.crmachievement.domain.result.ApiResponse;
@@ -10,11 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -28,15 +24,32 @@ public class CustomerController {
     public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
         //基础参数校验
         if (customerDTO.getName() == null || customerDTO.getPhone() == null || customerDTO.getCreatedBy() == null) {
-             return ResponseEntity.ok(BusinessCode.PARAM_IS_NULL);
+            return ResponseEntity.ok(BusinessCode.PARAM_IS_NULL);
         }
 
         //传递请求
         ServiceResult<?> serviceResult = crmCustomerService.createCustomer(
-                customerDTO.getName(),customerDTO.getCity(),customerDTO.getPhone(),customerDTO.getCreatedBy());
+                customerDTO.getName(), customerDTO.getCity(), customerDTO.getPhone(), customerDTO.getCreatedBy());
 
         //返回响应
-        ApiResponse<?> success = ApiResponse.success(serviceResult.getBusinessCode(), serviceResult.getPayload());
-        return ResponseEntity.ok(success);
+        ApiResponse<?> response = ApiResponse.success(serviceResult.getBusinessCode(), serviceResult.getPayload());
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation("全量更新客户")
+    public ResponseEntity<?> updateCustomer(@PathVariable("id") String id, @RequestBody CustomerDTO customerDTO) {
+        // 基础参数校验
+        if (customerDTO.getName() == null || customerDTO.getCity() == null || customerDTO.getPhone() == null || customerDTO.getCreatedBy() == null || customerDTO.getUpdatedBy() == null || customerDTO.getCreatedTime() == null) {
+            return ResponseEntity.ok(BusinessCode.PARAM_IS_NULL);
+        }
+
+        // 传递请求
+        ServiceResult<?> serviceResult = crmCustomerService.updateCustomer(
+                id, customerDTO.getName(), customerDTO.getCity(), customerDTO.getPhone(), customerDTO.getCreatedBy(), customerDTO.getUpdatedBy(), customerDTO.getCreatedTime());
+
+        // 返回响应
+        ApiResponse<?> response = ApiResponse.success(serviceResult.getBusinessCode(), serviceResult.getPayload());
+        return ResponseEntity.ok(response);
     }
 }

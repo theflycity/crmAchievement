@@ -16,9 +16,10 @@ public enum BusinessCode {
     USER_NOT_FOUND("用户不存在", 404, 4004, "USER_NOT_FOUND", "error.user.notFound"),
     USER_EXISTS("用户已存在", 409, 4005, "USER_EXISTS", "error.user.exists"),
     CUSTOMER_EXISTS("客户已存在", 409, 4006, "CUSTOMER_EXISTS", "error.customer.exists"),
+    CUSTOMER_NOT_FOUND("客户不存在", 404, 4008, "CUSTOMER_NOT_FOUND", "error.customer.notFound"),
     PASSWORD_ERROR("密码错误", 401, 4007, "PASSWORD_ERROR", "error.auth.password"),
 
-    // 服务端错误（业务状态码以5xxx区分）
+    // 服务端错误（业务状态码以5xxx区分）,
     INTERNAL_ERROR("系统繁忙，请稍后重试", 500, 5001, "INTERNAL_ERROR", "error.system.internal");
 
     private final String userMessage;      // 用户友好提示（默认中文，可直接展示）

@@ -15,14 +15,16 @@ public class CustomerDTO {
     private String city;
     @ApiModelProperty(value = "客户联系电话",required = true)
     private String phone;
-    @ApiModelProperty(value = "创建人",required = true)
+    @ApiModelProperty(value = "创建人")
     private String createdBy;
+    @ApiModelProperty(value = "更新人")
+    private String updatedBy;
     
     @ApiModelProperty(value = "创建时间")
-    @JsonIgnore
+    //@JsonIgnore
     private Date createdTime;
     
     @ApiModelProperty(value = "更新时间")
-    @JsonIgnore
+    //@JsonIgnore
     private Date updateTime;
 }
