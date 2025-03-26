@@ -1,4 +1,4 @@
-package com.example.crmachievement.service.impl;
+package com.example.crmachievement.rest.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -8,7 +8,7 @@ import com.example.crmachievement.domain.CrmUserRole;
 import com.example.crmachievement.mapper.CrmRolePermissionMapper;
 import com.example.crmachievement.mapper.CrmUserMapper;
 import com.example.crmachievement.mapper.CrmUserRoleMapper;
-import com.example.crmachievement.service.CrmUserService;
+import com.example.crmachievement.rest.service.CrmUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

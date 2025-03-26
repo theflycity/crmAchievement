@@ -1,11 +1,11 @@
-package com.example.crmachievement.service.impl;
+package com.example.crmachievement.rest.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crmachievement.common.generator.IdGenerator;
 import com.example.crmachievement.domain.CrmCustomer;
 import com.example.crmachievement.domain.result.ServiceResult;
-import com.example.crmachievement.service.CrmCustomerService;
+import com.example.crmachievement.rest.service.CrmCustomerService;
 import com.example.crmachievement.mapper.CrmCustomerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import static com.example.crmachievement.domain.enums.BusinessCode.*;
 @Service
 @RequiredArgsConstructor
 public class CrmCustomerServiceImpl extends ServiceImpl<CrmCustomerMapper, CrmCustomer>
-    implements CrmCustomerService{
+    implements CrmCustomerService {
     private final IdGenerator idGenerator;
     CrmCustomer customer = new CrmCustomer();
 

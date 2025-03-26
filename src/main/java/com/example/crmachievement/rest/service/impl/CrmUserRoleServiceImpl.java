@@ -1,8 +1,8 @@
-package com.example.crmachievement.service.impl;
+package com.example.crmachievement.rest.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crmachievement.domain.CrmUserRole;
-import com.example.crmachievement.service.CrmUserRoleService;
+import com.example.crmachievement.rest.service.CrmUserRoleService;
 import com.example.crmachievement.mapper.CrmUserRoleMapper;
 import org.springframework.stereotype.Service;
 

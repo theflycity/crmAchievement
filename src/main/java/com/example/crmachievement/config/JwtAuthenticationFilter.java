@@ -1,7 +1,7 @@
 package com.example.crmachievement.config;
 
 import com.example.crmachievement.domain.result.ApiResponse;
-import com.example.crmachievement.service.impl.PermissionServiceImpl;
+import com.example.crmachievement.rest.service.impl.PermissionServiceImpl;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

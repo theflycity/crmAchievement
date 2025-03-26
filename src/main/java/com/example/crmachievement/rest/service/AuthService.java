@@ -1,4 +1,4 @@
-package com.example.crmachievement.service;
+package com.example.crmachievement.rest.service;
 
 import com.example.crmachievement.domain.dto.AuthInfo;
 import com.example.crmachievement.domain.result.ServiceResult;

@@ -2,10 +2,9 @@ package com.example.crmachievement.rest;
 
 import com.example.crmachievement.domain.enums.BusinessCode;
 import com.example.crmachievement.domain.dto.CustomerDTO;
-import com.example.crmachievement.domain.request.UserRequest;
 import com.example.crmachievement.domain.result.ApiResponse;
 import com.example.crmachievement.domain.result.ServiceResult;
-import com.example.crmachievement.service.CrmCustomerService;
+import com.example.crmachievement.rest.service.CrmCustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class CustomerController {
 
     @PostMapping
     @ApiOperation("创建客户")
-    //@PreAuthorize("hasAuthority('system_customer_add')")
+    @PreAuthorize("hasAuthority('system_customer_add')")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
         // 基础参数校验
         if (customerDTO.getName() == null || customerDTO.getPhone() == null || customerDTO.getCreatedBy() == null) {
@@ -70,7 +69,7 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     @ApiOperation("查询单个客户")
-    //@PreAuthorize("hasAuthority('crm:customer:view')")
+    //todo @PreAuthorize("hasAuthority('crm:customer:view')")
     public ResponseEntity<?> getCustomer(@PathVariable("id") String id) {
         // 传递请求
         ServiceResult<?> serviceResult = crmCustomerService.getCustomer(id);

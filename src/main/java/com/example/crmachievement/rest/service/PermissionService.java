@@ -1,4 +1,4 @@
-package com.example.crmachievement.service;
+package com.example.crmachievement.rest.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crmachievement.domain.CrmUser;

@@ -5,7 +5,7 @@ import com.example.crmachievement.domain.dto.AuthInfo;
 import com.example.crmachievement.domain.request.LoginRequest;
 import com.example.crmachievement.domain.result.ApiResponse;
 import com.example.crmachievement.domain.result.ServiceResult;
-import com.example.crmachievement.service.AuthService;
+import com.example.crmachievement.rest.service.AuthService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
