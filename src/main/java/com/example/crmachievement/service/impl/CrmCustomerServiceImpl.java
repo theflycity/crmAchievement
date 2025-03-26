@@ -17,14 +17,13 @@ import static com.example.crmachievement.domain.enums.BusinessCode.*;
 
 /**
 * @author 001
-* @description 针对表【crm_customer】的数据库操作Service实现
-* @createDate 2025-03-19 21:08:19
+* @description 针对表【crm_customer(客户表)】的数据库操作Service实现
+* @createDate 2025-03-25 23:55:21
 */
 @Service
 @RequiredArgsConstructor
 public class CrmCustomerServiceImpl extends ServiceImpl<CrmCustomerMapper, CrmCustomer>
     implements CrmCustomerService{
-
     private final IdGenerator idGenerator;
     CrmCustomer customer = new CrmCustomer();
 
@@ -58,8 +57,8 @@ public class CrmCustomerServiceImpl extends ServiceImpl<CrmCustomerMapper, CrmCu
         customer.setCity(city);
         customer.setPhone(phone);
         customer.setCreatedBy(createdBy);
-        customer.setCreatedTime(now);
-        customer.setUpdateTime(now);
+        customer.setCreatedAt(now);
+        customer.setUpdatedAt(now);
 
         // 保存到数据库并返回结果
         return saveOrUpdateAndReturnResult(customer, customerId);
@@ -88,8 +87,8 @@ public class CrmCustomerServiceImpl extends ServiceImpl<CrmCustomerMapper, CrmCu
         customer.setCity(city);
         customer.setPhone(phone);
         customer.setCreatedBy(createdBy);
-        customer.setCreatedTime(createdTime);
-        customer.setUpdateTime(now);
+        customer.setCreatedAt(createdTime);
+        customer.setUpdatedAt(now);
         customer.setUpdatedBy(updatedBy);
 
         // 保存到数据库并返回结果

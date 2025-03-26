@@ -9,20 +9,20 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 
+ * 客户表
  * @TableName crm_customer
  */
 @TableName(value ="crm_customer")
 @Data
 public class CrmCustomer implements Serializable {
     /**
-     * 主键
+     * 客户ID
      */
-    @TableId(type = IdType.ASSIGN_UUID)
+    @TableId
     private String id;
 
     /**
-     * 客户名称
+     * 中文姓名
      */
     private String name;
 
@@ -37,24 +37,29 @@ public class CrmCustomer implements Serializable {
     private String phone;
 
     /**
-     * 创建时间
+     * 状态
      */
-    private Date createdTime;
+    private Integer status;
 
     /**
-     * 创建人
+     * 创建人ID
      */
     private String createdBy;
 
     /**
-     * 更新人
+     * 创建时间
+     */
+    private Date createdAt;
+
+    /**
+     * 更新人ID
      */
     private String updatedBy;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private Date updatedAt;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -75,10 +80,11 @@ public class CrmCustomer implements Serializable {
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getCity() == null ? other.getCity() == null : this.getCity().equals(other.getCity()))
             && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
-            && (this.getCreatedTime() == null ? other.getCreatedTime() == null : this.getCreatedTime().equals(other.getCreatedTime()))
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreatedBy() == null ? other.getCreatedBy() == null : this.getCreatedBy().equals(other.getCreatedBy()))
+            && (this.getCreatedAt() == null ? other.getCreatedAt() == null : this.getCreatedAt().equals(other.getCreatedAt()))
             && (this.getUpdatedBy() == null ? other.getUpdatedBy() == null : this.getUpdatedBy().equals(other.getUpdatedBy()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
+            && (this.getUpdatedAt() == null ? other.getUpdatedAt() == null : this.getUpdatedAt().equals(other.getUpdatedAt()));
     }
 
     @Override
@@ -89,10 +95,11 @@ public class CrmCustomer implements Serializable {
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getCity() == null) ? 0 : getCity().hashCode());
         result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
-        result = prime * result + ((getCreatedTime() == null) ? 0 : getCreatedTime().hashCode());
+        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreatedBy() == null) ? 0 : getCreatedBy().hashCode());
+        result = prime * result + ((getCreatedAt() == null) ? 0 : getCreatedAt().hashCode());
         result = prime * result + ((getUpdatedBy() == null) ? 0 : getUpdatedBy().hashCode());
-        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getUpdatedAt() == null) ? 0 : getUpdatedAt().hashCode());
         return result;
     }
 
@@ -106,10 +113,11 @@ public class CrmCustomer implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", city=").append(city);
         sb.append(", phone=").append(phone);
-        sb.append(", createdTime=").append(createdTime);
+        sb.append(", status=").append(status);
         sb.append(", createdBy=").append(createdBy);
+        sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedBy=").append(updatedBy);
-        sb.append(", updateTime=").append(updateTime);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

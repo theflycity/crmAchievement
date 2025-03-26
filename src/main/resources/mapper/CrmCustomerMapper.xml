@@ -5,18 +5,20 @@
 <mapper namespace="com.example.crmachievement.mapper.CrmCustomerMapper">
 
     <resultMap id="BaseResultMap" type="com.example.crmachievement.domain.CrmCustomer">
-            <id property="id" column="id" jdbcType="INTEGER"/>
+            <id property="id" column="id" jdbcType="VARCHAR"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="city" column="city" jdbcType="VARCHAR"/>
             <result property="phone" column="phone" jdbcType="VARCHAR"/>
-            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="createdBy" column="created_by" jdbcType="VARCHAR"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedBy" column="updated_by" jdbcType="VARCHAR"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,city,
-        phone,created_time,created_by,
-        update_time
+        phone,status,created_by,
+        created_at,updated_by,updated_at
     </sql>
 </mapper>

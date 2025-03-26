@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-@ApiOperation(value = "用户登录", notes = "通过用户名密码获取访问令牌")
+@ApiOperation(tags = "登录接口",value = "用户登录", notes = "通过用户名密码获取访问令牌")
 public class AuthController {
-
     private final AuthService authService;
 
     @PostMapping("/login")

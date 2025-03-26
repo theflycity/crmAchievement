@@ -4,13 +4,15 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtConfig {
@@ -57,6 +59,7 @@ public class JwtConfig {
      * @param claims 自定义声明（注意不要存放敏感信息）
      */
     public static String createToken(String subject, Map<String, Object> claims) {
+
         return Jwts.builder()
                 .setClaims(claims)                          // 自定义声明
                 .setSubject(subject)                        // 主题（用户标识）

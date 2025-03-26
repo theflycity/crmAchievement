@@ -8,8 +8,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan("com.example.crmachievement.mapper")
 public class MyBatisConfig {
-    @Bean
-    public IdentifierGenerator idGenerator() {
-        return new CustomIdGenerator();
-    }
+
 }

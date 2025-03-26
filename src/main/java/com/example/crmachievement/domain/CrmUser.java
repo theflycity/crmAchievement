@@ -1,14 +1,14 @@
 package com.example.crmachievement.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
- * 
+ * 用户表
  * @TableName crm_user
  */
 @TableName(value ="crm_user")
@@ -17,7 +17,7 @@ public class CrmUser implements Serializable {
     /**
      * 用户ID
      */
-    @TableId(type = IdType.ASSIGN_UUID)
+    @TableId
     private String id;
 
     /**
@@ -26,14 +26,20 @@ public class CrmUser implements Serializable {
     private String name;
 
     /**
-     * 联系电话
-     */
-    private String phone;
-
-    /**
      * 密码
      */
     private String password;
+
+    /**
+     * 部门ID
+     */
+    private String deptId;
+
+    /**
+     * 用户状态
+     */
+    private Integer status;
+
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -52,8 +58,9 @@ public class CrmUser implements Serializable {
         CrmUser other = (CrmUser) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()));
+            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
+            && (this.getDeptId() == null ? other.getDeptId() == null : this.getDeptId().equals(other.getDeptId()))
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
     }
 
     @Override
@@ -62,8 +69,9 @@ public class CrmUser implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
         result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
+        result = prime * result + ((getDeptId() == null) ? 0 : getDeptId().hashCode());
+        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         return result;
     }
 
@@ -75,8 +83,9 @@ public class CrmUser implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", phone=").append(phone);
         sb.append(", password=").append(password);
+        sb.append(", deptId=").append(deptId);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

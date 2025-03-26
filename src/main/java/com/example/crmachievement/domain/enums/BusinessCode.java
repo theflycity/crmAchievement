@@ -18,6 +18,10 @@ public enum BusinessCode {
     CUSTOMER_EXISTS("客户已存在", 409, 4006, "CUSTOMER_EXISTS", "error.customer.exists"),
     CUSTOMER_NOT_FOUND("客户不存在", 404, 4008, "CUSTOMER_NOT_FOUND", "error.customer.notFound"),
     PASSWORD_ERROR("密码错误", 401, 4007, "PASSWORD_ERROR", "error.auth.password"),
+    TOKEN_INVALID("无效的Token", 401, 4010, "TOKEN_INVALID", "error.token.invalid"),
+
+    // 权限相关错误
+    PERMISSION_DENIED("权限不足", 403, 4009, "PERMISSION_DENIED", "error.permission.denied"),
 
     // 服务端错误（业务状态码以5xxx区分）,
     INTERNAL_ERROR("系统繁忙，请稍后重试", 500, 5001, "INTERNAL_ERROR", "error.system.internal");
