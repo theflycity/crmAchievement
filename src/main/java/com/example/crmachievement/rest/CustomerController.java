@@ -69,7 +69,7 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     @ApiOperation("查询单个客户")
-    //todo @PreAuthorize("hasAuthority('crm:customer:view')")
+    //todo  @PreAuthorize("hasAuthority('crm:customer:view')")
     public ResponseEntity<?> getCustomer(@PathVariable("id") String id) {
         // 传递请求
         ServiceResult<?> serviceResult = crmCustomerService.getCustomer(id);
