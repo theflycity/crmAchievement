@@ -12,5 +12,4 @@ import java.util.List;
 */
 public interface UserRoleService extends IService<UserRole> {
 
-    List<String> getRoleIdsByUserId(String id);
 }

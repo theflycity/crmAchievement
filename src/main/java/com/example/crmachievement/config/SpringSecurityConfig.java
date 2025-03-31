@@ -1,5 +1,8 @@
 package com.example.crmachievement.config;
 
+import com.example.crmachievement.service.RolePermissionService;
+import com.example.crmachievement.service.RoleService;
+import com.example.crmachievement.service.UserRoleService;
 import com.example.crmachievement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +22,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final RolePermissionService rolePermissionService;
+    private final UserRoleService userRoleService;
     private final UserService userService;
+    private final RoleService roleService;
     private final JwtConfig jwtConfig;
 
 
@@ -35,7 +41,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().permitAll(); // 其他请求放行
         // todo 友好展示
         // 添加JWT过滤器
-        http.addFilterBefore(new JwtAuthenticationFilter(userService, jwtConfig), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(rolePermissionService,userRoleService,userService,roleService, jwtConfig), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

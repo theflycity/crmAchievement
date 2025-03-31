@@ -31,6 +31,11 @@ public class RolePermission implements Serializable {
     private String permissionPermCode;
 
     /**
+     * 权限ID
+     */
+    private String permissionId;
+
+    /**
      * 创建人ID
      */
     private String createdBy;

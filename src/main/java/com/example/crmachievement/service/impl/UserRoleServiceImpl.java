@@ -19,14 +19,6 @@ import java.util.stream.Collectors;
 public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole>
     implements UserRoleService {
 
-    // 获取角色列表
-    @Override
-    public List<String> getRoleIdsByUserId(String userId) {
-        LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserRole::getUserId, userId);
-        List<UserRole> userRoles = list(wrapper);
-        return userRoles.stream().map(UserRole::getRoleId).collect(Collectors.toList());
-    }
 }
 
 
