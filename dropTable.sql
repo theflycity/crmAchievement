@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS `crm_user_role`;
+DROP TABLE IF EXISTS `crm_role_permission`;
+DROP TABLE IF EXISTS `dict_data`;
+DROP TABLE IF EXISTS `dict_type`;
+DROP TABLE IF EXISTS `crm_customer`;
+DROP TABLE IF EXISTS `crm_user`;
+DROP TABLE IF EXISTS `crm_dept`;
+DROP TABLE IF EXISTS `crm_role`;
+DROP TABLE IF EXISTS `crm_menu`;
+DROP TABLE IF EXISTS `crm_permission`;

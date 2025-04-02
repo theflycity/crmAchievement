@@ -37,7 +37,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/doc.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs", "/api/auth/login").permitAll() // 放行的路径
             .antMatchers("/api/customer/**").authenticated() // 需要认证的接口
             .anyRequest().permitAll(); // 其他请求放行
-        // todo 友好展示
         // 添加JWT过滤器
         http.addFilterBefore(new JwtAuthenticationFilter(rolePermissionService,userRoleService,userService,roleService, jwtConfig,menuService,permissionService), UsernamePasswordAuthenticationFilter.class);
     }

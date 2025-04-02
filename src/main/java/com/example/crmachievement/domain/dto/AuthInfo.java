@@ -31,4 +31,49 @@ public class AuthInfo {
     private Collection<Menu> menus;
     // token
     private String token;
+
+    public AuthInfo setUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    public AuthInfo setUserName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    public AuthInfo setDeptId(String deptId) {
+        this.deptId = deptId;
+        return this;
+    }
+
+    public AuthInfo setDeptName(String deptName) {
+        this.deptName = deptName;
+        return this;
+    }
+
+    public AuthInfo setRoleNameList(List<String> roleNameList) {
+        this.roleNameList = roleNameList;
+        return this;
+    }
+
+    public AuthInfo setPermissionPermCode(Collection<? extends GrantedAuthority> permissionPermCode) {
+        this.permissionPermCode = permissionPermCode;
+        return this;
+    }
+
+    public AuthInfo setPermissionNameList(List<String> permissionNameList) {
+        this.permissionNameList = permissionNameList;
+        return this;
+    }
+
+    public AuthInfo setMenus(Collection<Menu> menus) {
+        this.menus = menus;
+        return this;
+    }
+
+    public AuthInfo setToken(String token) {
+        this.token = token;
+        return this;
+    }
 }

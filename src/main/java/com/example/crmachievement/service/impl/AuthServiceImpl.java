@@ -2,6 +2,7 @@ package com.example.crmachievement.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.crmachievement.common.exception.BadRequestException;
 import com.example.crmachievement.config.JwtConfig;
 import com.example.crmachievement.domain.*;
 import com.example.crmachievement.domain.dto.AuthInfo;
@@ -33,27 +34,23 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
 
     @Override
     public ServiceResult<AuthInfo> login(String username, String inputPassword) {
-        try {
+
             // 根据用户名获取用户信息
             User user = userService.getOne(new LambdaQueryWrapper<User>().eq(User::getName, username));
 
             // 用户空值处理,状态验证
             if (user == null || user.getStatus() == 0) {
-                return ServiceResult.fail(USER_NOT_FOUND);
+                throw new BadRequestException(USER_NOT_FOUND);
             }
 
             // 密码验证
             // todo 密码加密
             if (!Objects.equals(inputPassword, user.getPassword())) {
-                return ServiceResult.fail(PASSWORD_ERROR);
+                throw new BadRequestException(PASSWORD_ERROR);
             }
 
-            // 生成 AuthInfo
-            AuthInfo authInfo = new AuthInfo();
-            // 添加信息到 AuthInfo
-            authInfo.setUserId(user.getId());
-            authInfo.setUserName(user.getName());
-            authInfo.setDeptId(user.getDeptId());
+            // 生成 AuthInfo并添加信息到 AuthInfo
+            AuthInfo authInfo = new AuthInfo().setUserId(user.getId()).setUserName(user.getName()).setDeptId(user.getDeptId());
 
             // 查询部门名称
             String deptName = deptService.getById(user.getDeptId()).getName();
@@ -105,10 +102,5 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
             // 返回认证信息
             return ServiceResult.success(SUCCESS, authInfo);
 
-
-        } catch (Exception e) {
-            // 异常处理（如数据库断开）
-            return ServiceResult.fail(INTERNAL_ERROR);
-        }
     }
 }

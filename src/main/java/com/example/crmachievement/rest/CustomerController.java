@@ -25,7 +25,6 @@ public class CustomerController {
     @PostMapping
     @ApiOperation("创建客户")
     @PreAuthorize("hasAuthority('system:customer:add')")
-    // TODO 请求参数不合法的友好提示
     public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
         // 基础参数校验
         if (customerDTO.getName() == null || customerDTO.getPhone() == null || customerDTO.getCreatedBy() == null) {

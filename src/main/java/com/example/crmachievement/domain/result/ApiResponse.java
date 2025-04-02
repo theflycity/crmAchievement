@@ -39,4 +39,15 @@ public class ApiResponse<T> {
             null
         );
     }
+
+    public static ApiResponse<?> fail(BusinessCode businessCode,String userMessage) {
+        return new ApiResponse<>(
+                userMessage,
+                businessCode.getHttpStatusCode(),
+                businessCode.getBusStatusCode(),
+                businessCode.getBusCode(),
+                businessCode.getBusMsgKey(),
+                null
+        );
+    }
 }

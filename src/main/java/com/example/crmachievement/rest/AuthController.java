@@ -1,6 +1,6 @@
 package com.example.crmachievement.rest;
 
-import com.example.crmachievement.domain.enums.BusinessCode;
+import com.example.crmachievement.common.exception.BadRequestException;
 import com.example.crmachievement.domain.dto.AuthInfo;
 import com.example.crmachievement.domain.request.LoginRequest;
 import com.example.crmachievement.domain.result.ApiResponse;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.example.crmachievement.domain.enums.BusinessCode.PARAM_IS_NULL;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -27,7 +29,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         // 参数基础校验
         if (loginRequest.getName() == null || loginRequest.getPassword() == null) {
-            return ResponseEntity.ok(BusinessCode.PARAM_IS_NULL);
+            throw new BadRequestException(PARAM_IS_NULL);
         }
         // 解析请求参数并转发
         ServiceResult<AuthInfo> serviceResult = authService.login(loginRequest.getName(), loginRequest.getPassword());

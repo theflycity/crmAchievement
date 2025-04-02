@@ -23,7 +23,6 @@ public class StrategyContext {
     public QueryStrategy getPolicy(String role) {
         QueryStrategy strategy = strategyMap.get(role);
         if (strategy == null) {
-            // todo 友好展示
             throw new IllegalArgumentException("No strategy found for role: " + role);
         }
         return strategy;
