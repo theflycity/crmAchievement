@@ -22,4 +22,8 @@ class AchievementApplicationTests {
     void testLogin() {
 
     }
+    @Test
+    void testVersion(){
+
+    }
 }
