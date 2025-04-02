@@ -24,6 +24,6 @@ class AchievementApplicationTests {
     }
     @Test
     void testVersion(){
-
+        System.out.println("test1");
     }
 }
