@@ -4,6 +4,7 @@ import com.example.crmachievement.domain.enums.BusinessCode;
 import com.example.crmachievement.domain.dto.CustomerDTO;
 import com.example.crmachievement.domain.result.ApiResponse;
 import com.example.crmachievement.domain.result.ServiceResult;
+import com.example.crmachievement.security.UserSecurityInfo;
 import com.example.crmachievement.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,18 +63,13 @@ public class CustomerController {
     @ApiOperation("查询客户列表")
     @PreAuthorize("hasAuthority('crm:customer:view')")
     public ResponseEntity<?> getCustomerList(@RequestHeader("Authorization") String authHeader) {
-        // 从安全上下文中获取当前用户的id, 姓名,部门id,角色id列表,权限列表,菜单列表
+        // 从安全上下文中获取 UerDTO 和 角色列表
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String role = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(a -> a.startsWith("ROLE_"))
-                .findFirst()
-                .orElse("UNKNOWN");
-        // 获取
-        String userDTO = authentication.getName();
+        // 从 Authentication 对象中获取 UserSecurityInfo
+        UserSecurityInfo userSecurityInfo = (UserSecurityInfo) authentication.getPrincipal();
 
         // 传递请求
-        ServiceResult<?> serviceResult = customerService.getCustomerList(userDTO,role);
+        ServiceResult<?> serviceResult = customerService.getCustomerList(userSecurityInfo);
 
         // 返回响应
         ApiResponse<?> response = ApiResponse.success(serviceResult.getBusinessCode(), serviceResult.getPayload());

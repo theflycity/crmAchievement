@@ -1,9 +1,6 @@
 package com.example.crmachievement.config;
 
-import com.example.crmachievement.service.RolePermissionService;
-import com.example.crmachievement.service.RoleService;
-import com.example.crmachievement.service.UserRoleService;
-import com.example.crmachievement.service.UserService;
+import com.example.crmachievement.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +24,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final RoleService roleService;
     private final JwtConfig jwtConfig;
-
+    private final MenuService menuService;
+    private final PermissionService permissionService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -41,7 +39,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().permitAll(); // 其他请求放行
         // todo 友好展示
         // 添加JWT过滤器
-        http.addFilterBefore(new JwtAuthenticationFilter(rolePermissionService,userRoleService,userService,roleService, jwtConfig), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(rolePermissionService,userRoleService,userService,roleService, jwtConfig,menuService,permissionService), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

@@ -73,26 +73,26 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
                 authInfo.setRoleNameList(roleNames);
 
                 // 查询权限ID列表
-                LambdaQueryWrapper<RolePermission> wrapper = new LambdaQueryWrapper<>();
-                wrapper.in(RolePermission::getRoleId, roleIdList);
-                List<RolePermission> rolePermissionList = rolePermissionService.list(wrapper);
+                LambdaQueryWrapper<RolePermission> rolePermissionListWrapper = new LambdaQueryWrapper<>();
+                rolePermissionListWrapper.in(RolePermission::getRoleId, roleIdList);
+                List<RolePermission> rolePermissionList = rolePermissionService.list(rolePermissionListWrapper);
                 List<String> permissionIds = rolePermissionList.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
 
                 // 查询权限ID列表空值处理
                 if (!permissionIds.isEmpty()) {
                     // 查询权限标识符列表
-                    Collection<? extends GrantedAuthority> permissionPermCodeList = rolePermissionList.stream().map(RolePermission::getPermissionPermCode).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                    Collection<? extends GrantedAuthority> permissionPermCodeList = rolePermissionList.stream().map(RolePermission::getPermissionPermCode).distinct().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
                     authInfo.setPermissionPermCode(permissionPermCodeList);
                     // 查询权限名称列表
                     List<String> permissionNameList = permissionService.listByIds(permissionIds).stream().map(Permission::getPermName).collect(Collectors.toList());
                     authInfo.setPermissionNameList(permissionNameList);
 
                     // 提取权限代码列表为 String 类型
-                    List<String> permissionCodes = rolePermissionList.stream().map(RolePermission::getPermissionPermCode).collect(Collectors.toList());
+                    List<String> permissionCodeList = rolePermissionList.stream().map(RolePermission::getPermissionPermCode).collect(Collectors.toList());
                     // 查询菜单信息列表
-                    LambdaQueryWrapper<Menu> wrapper2 = new LambdaQueryWrapper<>();
-                    wrapper2.in(Menu::getPermCode, permissionCodes);
-                    List<Menu> menusList = menuService.list(wrapper2);
+                    LambdaQueryWrapper<Menu> menusListWrapper = new LambdaQueryWrapper<>();
+                    menusListWrapper.in(Menu::getPermCode, permissionCodeList);
+                    List<Menu> menusList = menuService.list(menusListWrapper);
                     authInfo.setMenus(menusList);
                 }
             }

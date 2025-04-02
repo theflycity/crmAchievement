@@ -3,6 +3,7 @@ package com.example.crmachievement.service;
 import com.example.crmachievement.domain.Customer;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crmachievement.domain.result.ServiceResult;
+import com.example.crmachievement.security.UserSecurityInfo;
 
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public interface CustomerService extends IService<Customer> {
 
     ServiceResult<?> updateCustomer(String id, String inputName, String inputCity, String inputPhone, String inputCreatedBy, String createdBy, Date createdTime);
 
-    ServiceResult<?> getCustomerList(String userDTO, String role);
+    ServiceResult<?> getCustomerList(UserSecurityInfo userSecurityInfo);
 
     ServiceResult<?> getCustomer(String id);
 

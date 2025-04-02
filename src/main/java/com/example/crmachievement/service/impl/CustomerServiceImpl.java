@@ -4,15 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crmachievement.common.generator.IdGenerator;
 import com.example.crmachievement.domain.Customer;
+import com.example.crmachievement.domain.enums.RolePriority;
 import com.example.crmachievement.domain.result.ServiceResult;
 import com.example.crmachievement.mapper.CustomerMapper;
+import com.example.crmachievement.security.UserSecurityInfo;
 import com.example.crmachievement.service.CustomerService;
+import com.example.crmachievement.service.strategy.QueryStrategy;
 import com.example.crmachievement.service.strategy.StrategyContext;
 import com.example.crmachievement.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.example.crmachievement.domain.enums.BusinessCode.*;
 
@@ -28,7 +34,16 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer>
     private final IdGenerator idGenerator;
     Customer customer = new Customer();
     private final RedisUtil redisUtil;
-    private final StrategyContext strategyContext;
+    private final @Lazy StrategyContext strategyContext;
+
+    // 创建角色标识符到 RolePriority 的映射关系
+    private static final Map<String, RolePriority> rolePriorityMap = new HashMap<>();
+    static {
+        rolePriorityMap.put("admin", RolePriority.ADMIN);
+        rolePriorityMap.put("sales_manager", RolePriority.SALES_MANAGER);
+        rolePriorityMap.put("sales", RolePriority.SALES);
+        // 添加其他角色映射
+    }
 
     @Override
     public ServiceResult<?> createCustomer(String inputName, String inputCity, String inputPhone, String inputCreatedBy) {
@@ -99,17 +114,34 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer>
     }
 
     @Override
-    public ServiceResult<?> getCustomerList(String userDTO, String role) {
+    public ServiceResult<?> getCustomerList(UserSecurityInfo userSecurityInfo) {
         // TODO 从缓存中查询数据，如果存在直接返回，不存在再查询数据库并缓存
 
         // TODO 策略模式查询客户列表
-        /*// 新建条件查询器
-        QueryWrapper<CrmCustomer> queryWrapper = new QueryWrapper<>();
-        // 通过策略上下文调用策略
-        strategyContext.getPolicy(role).apply(queryWrapper,userDTO);
+        // 获取用户角色逻辑标识列表
+        List<String> roles = userSecurityInfo.getRoleLogicalKeyList();
 
-        // 执行查询并获取结果
-        ServiceResult<?> serviceResult = QueryStrategy.query(queryWrapper, userDTO);*/
+        // 根据角色优先级选择最高优先级的角色
+        String highestPriorityRole = roles.stream()
+                // 创建一个 AbstractMap.SimpleEntry 对象，其中键是角色字符串，值是对应的 RolePriority 枚举对象。
+                .map(role -> new AbstractMap.SimpleEntry<>(role, rolePriorityMap.get(role.toLowerCase())))
+                // 过滤掉未映射的角色
+                .filter(entry -> entry.getValue() != null)
+                // 比较两个 RolePriority 对象的优先级值,数字越小优先级越高
+                .min(Map.Entry.comparingByValue((r1, r2) -> Integer.compare(r1.getPriority(), r2.getPriority())))
+                // 从 Map.Entry 对象中提取键（即角色字符串）
+                .map(Map.Entry::getKey)
+                .orElse(null);
+
+        if (highestPriorityRole == null) {
+            return ServiceResult.fail(PERMISSION_DENIED);
+        }
+
+        // 通过策略上下文调用策略
+        QueryStrategy strategy = strategyContext.getPolicy(highestPriorityRole);
+        ServiceResult<?> serviceResult = strategy.query(userSecurityInfo);
+
+
 
         // TODO 动态生成缓存键
         // String cacheKey = String.format("customer_list_%s_%s", role, userId);
@@ -120,7 +152,8 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer>
             redisUtil.set(cacheKey, customerList, 300);
         }*/
 
-        return null;//serviceResult;
+        // 返回结果
+        return serviceResult;
     }
 
     @Override

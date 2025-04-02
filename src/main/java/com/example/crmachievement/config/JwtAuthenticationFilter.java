@@ -1,15 +1,11 @@
 package com.example.crmachievement.config;
 
-import com.example.crmachievement.domain.Role;
-import com.example.crmachievement.domain.RolePermission;
-import com.example.crmachievement.domain.UserRole;
-import com.example.crmachievement.domain.dto.UserDTO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.crmachievement.domain.*;
 import com.example.crmachievement.domain.result.ApiResponse;
 import com.example.crmachievement.security.UserSecurityInfo;
-import com.example.crmachievement.service.RolePermissionService;
-import com.example.crmachievement.service.RoleService;
-import com.example.crmachievement.service.UserRoleService;
-import com.example.crmachievement.service.UserService;
+import com.example.crmachievement.service.*;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -26,7 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,6 +37,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserService userService;
     private final RoleService roleService;
     private final JwtConfig jwtConfig;
+    private final MenuService menuService;
+    private final PermissionService permissionService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,@NonNull FilterChain filterChain)
@@ -59,28 +56,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = jwtConfig.parseToken(token);
                 // 从声明中获取用户ID
                 String userId = claims.getSubject();
-                // 从数据库获取用户权限信息
-                HashMap<String, Object> columnMap = new HashMap<>();
-                columnMap.put("user_id", userId);
-                List<String> roleIdList = userRoleService.listByMap(columnMap).stream().map(UserRole::getRoleId).collect(Collectors.toList());
-                List<String> permissionCodeList = rolePermissionService.
-                        listByIds(roleIdList).stream().
-                        map(RolePermission::getPermissionPermCode).
-                        collect(Collectors.toList());
-                // 创建 GrantedAuthority列表，用于存储用户的权限信息
-                List<GrantedAuthority> grantedAuthorities = permissionCodeList.stream()
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-                // 创建 UserSecurityInfo用于存储用户安全信息
-                String userName = userService.getById(userId).getName();
-                String password = userService.getById(userId).getPassword();
-                UserSecurityInfo userSecurityInfo = new UserSecurityInfo(userId, userName, password, grantedAuthorities);
-                // 创建 UserDTO 对象，用于存储用户信息
-                String deptId = userService.getById(userId).getDeptId();
+                // 从数据库获取用户角色信息
+                LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
+                wrapper.eq(UserRole::getUserId, userId);
+                List<UserRole> userRoleList = userRoleService.list(wrapper);
+                // 获取角色ID列表
+                List<String> roleIdList = userRoleList.stream().map(UserRole::getRoleId).collect(Collectors.toList());
                 List<String> roleLogicalKeyList = roleService.listByIds(roleIdList).stream().map(Role::getLogicalKey).collect(Collectors.toList());
-                UserDTO userDTO = new UserDTO(userId, userName, deptId, roleIdList, roleLogicalKeyList);
-                // 创建 UsernamePasswordAuthenticationToken对象，用于存储认证信息(权限信息,安全信息,用户信息)
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userSecurityInfo, userDTO, grantedAuthorities);
+                // 从数据库获取角色权限信息
+                List<RolePermission> rolePermissionList = rolePermissionService.list(Wrappers.lambdaQuery(RolePermission.class).in(RolePermission::getRoleId, roleIdList));
+                // 获取权限ID列表
+                List<String> permissionIdList = rolePermissionList.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
+                // 获取权限标识符列表
+                List<String> permissionPermCodeList = rolePermissionList.stream().map(RolePermission::getPermissionPermCode).collect(Collectors.toList());
+                // 创建 GrantedAuthority列表，用于存储用户的权限标识符列表
+                List<GrantedAuthority> grantedAuthorities = permissionPermCodeList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                // 从数据库获取权限信息
+                List<String> permissionNameList = permissionService.listByIds(permissionIdList).stream().map(Permission::getPermName).collect(Collectors.toList());
+                // 从数据库获取用户信息
+                User user = userService.getById(userId);
+                String userName = user.getName();
+                String password = user.getPassword();
+                // 从数据库获取菜单信息
+                LambdaQueryWrapper<Menu> menuWrapper = new LambdaQueryWrapper<>();
+                menuWrapper.in(Menu::getPermCode, permissionPermCodeList);
+                List<Menu> menuList = menuService.list(menuWrapper);
+                List<String> menuIdList = menuList.stream().map(Menu::getId).collect(Collectors.toList());
+                // 创建 UserSecurityInfo 对象，用于存储用户信息
+                String deptId = userService.getById(userId).getDeptId();
+                UserSecurityInfo userSecurityInfo = new com.example.crmachievement.security.UserSecurityInfo(userId, userName, password, grantedAuthorities, deptId, roleIdList,roleLogicalKeyList,permissionIdList,permissionNameList,menuIdList,menuList);
+                // 创建 UsernamePasswordAuthenticationToken对象，用于存储认证信息(安全信息,证书,权限信息)
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userSecurityInfo, null, grantedAuthorities);
                 // 设置认证信息的详细信息
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 // 将认证信息设置到SecurityContextHolder中

@@ -13,22 +13,13 @@ import java.util.List;
 @SpringBootTest
 class AchievementApplicationTests {
 
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private AuthController authController;
     @Test
     void testConnect() {
-        List<User> userList = userMapper.selectList(null);
-        userList.forEach(System.out::println);
+
     }
 
     @Test
-    void testLogin() throws BadRequestException {
-        /*需要在 UserLoginRequestDTO类上加 @AllArgsConstructor
-        LoginRequest user = new LoginRequest("001", "123456");
-        UserLoginResponseDTO responseEntity = authController.doLogin(user);
-        System.out.println("responseEntity = " + responseEntity);*/
-    }
+    void testLogin() {
 
+    }
 }

@@ -1,26 +1,30 @@
 package com.example.crmachievement.service.strategy.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.crmachievement.domain.Customer;
+import com.example.crmachievement.domain.enums.BusinessCode;
 import com.example.crmachievement.domain.result.ServiceResult;
+import com.example.crmachievement.security.UserSecurityInfo;
+import com.example.crmachievement.service.CustomerService;
 import com.example.crmachievement.service.strategy.QueryStrategy;
-import org.springframework.security.access.prepost.PreAuthorize;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-@PreAuthorize("hasRole('sales')")
+@RequiredArgsConstructor
 public class SalesQueryStrategy implements QueryStrategy {
 
+    private final CustomerService customerService;
+
     @Override
-    public ServiceResult<?> query(QueryWrapper<Customer> queryWrapper, String userDTO) {
-        /*// 构建带销售ID的查询条件
-        wrapper.eq(Customer::getUpdatedBy, salesmanId);
+    public ServiceResult<?> query(UserSecurityInfo userSecurityInfo) {
 
-        // 执行查询
-        CrmCustomerMapper mapper = CustomerServiceImpl.this.mapper; // 需要注入或重构
-        List<Customer> list = mapper.selectList(wrapper);*/
-
-        return null;// ServiceResult.success(list);
+        // 执行带销售 ID的查询
+        List<Customer> customerList = customerService.list(Wrappers.lambdaQuery(Customer.class)
+                .eq(Customer::getUpdatedBy, userSecurityInfo.getUserId()));
+        return ServiceResult.success(BusinessCode.SUCCESS,customerList);
 
     }
 }

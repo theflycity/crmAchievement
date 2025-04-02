@@ -1,14 +1,10 @@
 package com.example.crmachievement.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crmachievement.domain.UserRole;
-import com.example.crmachievement.service.UserRoleService;
 import com.example.crmachievement.mapper.UserRoleMapper;
+import com.example.crmachievement.service.UserRoleService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
 * @author 001
